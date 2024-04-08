@@ -72,6 +72,7 @@ client.on(Discord.Events.InteractionCreate, async (interaction) => {
     if (!interaction.isCommand()) return;
 
     const command = client.commands.get(interaction.commandName);
+    const username = interaction.guild.members.fetch(interaction.user.id);
     if (!command) return;
     
     await client.player.extractors.loadDefault();
@@ -79,7 +80,7 @@ client.on(Discord.Events.InteractionCreate, async (interaction) => {
 
     await interaction.deferReply();
     await command.execute(client, interaction);
-    console.log(`[${new Date()}]\n\'${interaction.client.name}\' -> \'${interaction.commandName}\n`);
+    console.log(`[${new Date()}]\n\'${username}\' -> \'${interaction.commandName}\n`);
 });
 
 client.on(Discord.Events.MessageCreate, async (interaction) => {
