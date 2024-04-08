@@ -78,7 +78,7 @@ client.on(Discord.Events.InteractionCreate, async (interaction) => {
     if (interaction.commandName.endsWith("-invalid-")) return await interaction.reply("현재 이용 불가능한 명령어입니다.");
 
     await interaction.deferReply();
-    const request = await command.execute(client, interaction);
+    await command.execute(client, interaction);
     console.log(`[${new Date()}]\n\'${interaction.client.name}\' -> \'${interaction.commandName}\n`);
 });
 
