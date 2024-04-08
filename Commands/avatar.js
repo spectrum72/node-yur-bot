@@ -12,6 +12,7 @@ module.exports = {
         client.user.setAvatar(url);
         const result = new EmbedBuilder().setTitle("아바타 변경").setDescription("[변경된 아바타]").setColor(Colors.Green).setImage(url);
         await interaction.editReply({embeds: [result.data]});
-        console.log(`[${new Date()}]\nAvatar Converted: ${url}`);
+        const proceed = `Avatar Converted - ${url}`;
+        return proceed; 
     } 
 }
