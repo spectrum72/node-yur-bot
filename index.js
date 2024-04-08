@@ -12,8 +12,8 @@ const guilds = JSON.parse(fs.readFileSync(Path.join(__dirname, "guilds.json")));
 //const guilds = JSON.parse("guilds.json");
 const CLIENT_TOKEN = process.env.CLIENT_TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
-const a = fs.readFileSync(Path.join(__dirname, "integer-updating")).toString();
-let isUpdating = Boolean(a);
+/*const a = fs.readFileSync(Path.join(__dirname, "integer-updating")).toString();
+let isUpdating = Boolean(a);*/
 
 const client = new Discord.Client({intents: [Discord.GatewayIntentBits.Guilds,
             Discord.IntentsBitField.Flags.GuildVoiceStates,
