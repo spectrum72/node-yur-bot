@@ -79,7 +79,7 @@ client.on(Discord.Events.InteractionCreate, async (interaction) => {
 
     await interaction.deferReply();
     const request = await command.execute(client, interaction);
-    console.log(`[${new Date()}]\n\'${interaction.client.name}\'이(가) \'${interaction.commandName}\'을(를) 사용함: ${request}\n`);
+    console.log(`[${new Date()}]\n\'${interaction.client.name}\' -> \'${interaction.commandName}\n`);
 });
 
 client.on(Discord.Events.MessageCreate, async (interaction) => {
