@@ -2,10 +2,13 @@ const Discord = require("discord.js");
 const internal = require("stream");
 const dotenv = require("dotenv").config();
 const Path = require("path");
+const Characterai = require("node_characterai");
+
 const fs = require("fs");
 const { SlashCommandBuilder, REST, Routes, EmbedBuilder } = require("discord.js");
 const { Collection } = require("@discordjs/collection");
 const { Player } = require("discord-player");
+const characterai = new Characterai();
 
 const guilds = JSON.parse(fs.readFileSync(Path.join(__dirname, "guilds.json")));
 
@@ -66,6 +69,7 @@ client.commands.set(commands);
 
 client.once(Discord.Events.ClientReady, () => {
     console.log("Client Ready");
+    characterai.authenticateAsGuest();
 });
 
 client.on(Discord.Events.InteractionCreate, async (interaction) => {
@@ -85,6 +89,10 @@ client.on(Discord.Events.InteractionCreate, async (interaction) => {
 client.on(Discord.Events.MessageCreate, async (interaction) => {
     if (interaction.content == "으응이 손") {
         interaction.reply("손!");
+    }
+
+    if (interaction.content.startsWith(".")) {
+
     }
 });
 
