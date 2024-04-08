@@ -11,14 +11,15 @@
   "author": "KYEONGMIN CHO <ggingmin@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "@discord-player/extractor": "^4.4.6",
+    "@discord-player/extractor": "^4.4.7",
     "@discordjs/collection": "^2.0.0",
     "@discordjs/opus": "^0.9.0",
     "axios": "^1.6.5",
     "cheerio": "^1.0.0-rc.12",
-    "discord-player": "^6.6.7",
+    "discord-player": "^6.6.8",
     "discord.js": "^14.14.1",
     "dotenv": "^16.3.1",
+    "stream": "^0.0.2",
     "ytdl-core": "^4.11.5"
   },
   "devDependencies": {
