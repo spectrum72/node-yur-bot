@@ -82,7 +82,7 @@ client.on(Discord.Events.InteractionCreate, async (interaction) => {
 });
 
 client.on(Discord.Events.MessageCreate, async (interaction) => {
-    if (interaction.content.equals("으응이 손")) {
+    if (interaction.content == "으응이 손") {
         interaction.reply("손!");
     }
 });
