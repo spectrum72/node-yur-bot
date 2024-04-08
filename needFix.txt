@@ -1,0 +1,6 @@
+music
+musicoff
+resume
+stop
+skip
+노래방검색

@@ -1,0 +1,15 @@
+{
+    "guilds":[
+        {
+            "name": "bot server",
+            "guildsID": "931133833200418886",
+            "develop": true
+        },
+        {
+            "name": "잘 타는 바(물리)",
+            "guildsID": "1008720074640736407",
+            "devlop": false
+        }
+        
+    ]
+}

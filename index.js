@@ -1,59 +1,90 @@
-const Discord = require('discord.js');
-const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] })
-const dotenv = require('dotenv'); 
-dotenv.config();
+const Discord = require("discord.js");
+const internal = require("stream");
+const dotenv = require("dotenv").config();
+const Path = require("path");
+const fs = require("fs");
+const { SlashCommandBuilder, REST, Routes, EmbedBuilder } = require("discord.js");
+const { Collection } = require("@discordjs/collection");
+const { Player } = require("discord-player");
 
-const sleep = (ms) => {
-    return new Promise((r) => setTimeout(r, ms));
-}
+const guilds = JSON.parse(fs.readFileSync(Path.join(__dirname, "guilds.json")));
 
-if (process.env.TOKEN == null) {
-    console.log("An discord token is empty.");
-    sleep(60000).then(() => console.log("Service is getting stopped automatically"));
-    return 0;
-}
+//const guilds = JSON.parse("guilds.json");
+const CLIENT_TOKEN = process.env.CLIENT_TOKEN;
+const CLIENT_ID = process.env.CLIENT_ID;
+const a = fs.readFileSync(Path.join(__dirname, "integer-updating")).toString();
+let isUpdating = Boolean(a);
 
-const discordLogin = async() => {
-    try {
-        await client.login(process.env.TOKEN);  
-    } catch (TOKEN_INVALID) {
-        console.log("An invalid token was provided");
-        sleep(60000).then(() => console.log("Service is getting stopped automatically"));
+const client = new Discord.Client({intents: [Discord.GatewayIntentBits.Guilds,
+            Discord.IntentsBitField.Flags.GuildVoiceStates,
+            Discord.IntentsBitField.Flags.Guilds,
+            Discord.IntentsBitField.Flags.MessageContent,
+            Discord.IntentsBitField.Flags.GuildMembers,
+            Discord.IntentsBitField.Flags.GuildMessages,
+            Discord.IntentsBitField.Flags.GuildVoiceStates]});
+
+client.commands = new Collection();
+client.player = new Player(client, {
+    ytdlOptions: {
+        quality: "highestaudio",
+        highWaterMark: 1 << 25
     }
-}
-
-
-discordLogin();
-
-
-client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}.`);
 });
 
-  
-client.on('messageCreate', msg => {
+let commands = [];
+const xcmd = fs.readFileSync(Path.join(__dirname, "needFix.txt")).toString();
 
-    try { 
-        if (msg.content === process.env.PREFIX + 'call') msg.channel.send(`!callback`);
+const cmdPath = Path.join(__dirname, "Commands");
+const cmdFiles = fs.readdirSync(cmdPath).filter((file) => file.endsWith(".js"));
 
-        if (msg.content === process.env.PREFIX + 'avatar') msg.channel.send(msg.author.displayAvatarURL());
-        
-        if(msg.content === process.env.PREFIX + 'help') {
-            const embed = new Discord.MessageEmbed()
-            .setTitle("도움말")
-            .setColor('000') 
-            .setDescription('디스코드봇 테스트입니다.');
-
-            msg.reply({ embeds: [embed] })
+for (const file of cmdFiles) {
+    const path = Path.join(cmdPath, file);
+    const command = require(path);
+    if ("data" in command && "execute" in command) {
+        if (xcmd.indexOf(command.data.name) != -1) {
+            command.data.name = command.data.name + " -invalid-";
         }
-
-        if(msg.content === process.env.PREFIX + 'server') {
-            msg.channel.send(`현재 서버의 이름은 ${msg.guild.name} 입니다.\n총 멤버 수는 ${msg.guild.memberCount} 명 입니다.`)
-          }
-
-        console.log(msg.content)
-    } catch (e) {
-        console.log(e);
+        client.commands.set(command.data.name, command);
+        commands.push(command.data.toJSON());
     }
-    
+}
+
+const rest = new REST({ version: '10' }).setToken(CLIENT_TOKEN);
+
+(async() => {
+    try {
+            for (guild of guilds.guilds) {
+                const data = await rest.put(Routes.applicationGuildCommands(CLIENT_ID, guild.guildsID), { body: commands });
+            }
+    } catch (e) {
+        console.error(e);
+        process.exit(1);
+    }
+})();
+
+client.commands.set(commands);
+
+client.once(Discord.Events.ClientReady, () => {
+    console.log("Client Ready");
 });
+
+client.on(Discord.Events.InteractionCreate, async (interaction) => {
+    if (!interaction.isCommand()) return;
+
+    const command = client.commands.get(interaction.commandName);
+    if (!command) return;
+    
+    await client.player.extractors.loadDefault();
+    if (interaction.commandName.endsWith(" -invalid-")) return await interaction.reply("현재 이용 불가능한 명령어입니다.");
+
+    await interaction.deferReply();
+    await command.execute(client, interaction);
+});
+
+client.on(Discord.Events.MessageCreate, async (interaction) => {
+    if (interaction.content.equals("으응이 손")) {
+        interaction.reply("손!");
+    }
+});
+
+client.login(CLIENT_TOKEN);
