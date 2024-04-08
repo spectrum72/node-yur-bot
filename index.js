@@ -42,7 +42,7 @@ for (const file of cmdFiles) {
     const command = require(path);
     if ("data" in command && "execute" in command) {
         if (xcmd.indexOf(command.data.name) != -1) {
-            command.data.name += " -invalid-";
+            command.data.name += "-invalid-";
         }
         client.commands.set(command.data.name, command);
         commands.push(command.data.toJSON());
@@ -75,7 +75,7 @@ client.on(Discord.Events.InteractionCreate, async (interaction) => {
     if (!command) return;
     
     await client.player.extractors.loadDefault();
-    if (interaction.commandName.endsWith(" -invalid-")) return await interaction.reply("현재 이용 불가능한 명령어입니다.");
+    if (interaction.commandName.endsWith("-invalid-")) return await interaction.reply("현재 이용 불가능한 명령어입니다.");
 
     await interaction.deferReply();
     await command.execute(client, interaction);
