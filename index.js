@@ -42,7 +42,7 @@ for (const file of cmdFiles) {
     const command = require(path);
     if ("data" in command && "execute" in command) {
         if (xcmd.indexOf(command.data.name) != -1) {
-            command.data.name = command.data.name + " -invalid-";
+            command.data.name += " -invalid-";
         }
         client.commands.set(command.data.name, command);
         commands.push(command.data.toJSON());
