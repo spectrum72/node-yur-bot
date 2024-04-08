@@ -80,7 +80,7 @@ client.on(Discord.Events.InteractionCreate, async (interaction) => {
 
     await interaction.deferReply();
     await command.execute(client, interaction);
-    console.log(`[${new Date()}]\n\'${username}\' -> \'${interaction.commandName}\n`);
+    console.log(`[${new Date()}]\n\'[${username}:${interaction.user.id}]\' -> \'${interaction.commandName}\n`);
 });
 
 client.on(Discord.Events.MessageCreate, async (interaction) => {
