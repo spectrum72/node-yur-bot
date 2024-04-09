@@ -10,7 +10,7 @@ module.exports = {
         
         const response = new EmbedBuilder();
 
-        const voiceChannel = client.member.voice.channel;
+        const voiceChannel = interaction.member.voice.channel;
         if (!voiceChannel) return await interaction.editReply("음성 채널에 들어가셔야 합니다.");
 
         const queue = await client.player.node.create(interaction.guild);
