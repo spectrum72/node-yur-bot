@@ -26,6 +26,6 @@ module.exports = {
         })
         .catch((err) => console.log(err));
 
-        return await interaction.editReply(tracklist.tracks.length);
+        return await interaction.editReply(`${tracklist.tracks.length}`);
     }
 }
