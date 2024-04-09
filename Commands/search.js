@@ -28,7 +28,7 @@ module.exports = {
             description += `[${i+1}] ${track?.title}\n\n`;
         }
 
-        response.setName(`${tracklist.tracks.length}개의 음악을 찾았어요!`)
+        response.setTitle(`${tracklist.tracks.length}개의 음악을 찾았어요!`)
             .setDescription(description)
             .setColor(Colors.Green);
         return await interaction.editReply({ embeds : [response.data]});
