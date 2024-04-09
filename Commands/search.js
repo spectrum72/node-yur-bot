@@ -5,7 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("search")
         .setDescription("재생 가능한 음악을 검색합니다.")
-        .addUserOption((option) => option.setName("query").setDescription("search")),
+        .addStringOption((option) => option.setName("query").setDescription("search")),
     async execute(client, interaction) {
 
         const response = new EmbedBuilder();
