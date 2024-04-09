@@ -5,7 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("play")
         .setDescription("노래를 재생합니다.")
-        .addUserOption((option) => option.setName("music").description("url 또는 곡명")),
+        .addUserOption((option) => option.setName("music").setDescription("url 또는 곡명")),
     async execute(client, interaction) {
         
         const response = new EmbedBuilder();
