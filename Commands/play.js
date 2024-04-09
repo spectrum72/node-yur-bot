@@ -20,19 +20,11 @@ module.exports = {
         const isUrl = require.startsWith("http://") || require.startsWith("https://");
         const queryType = (isUrl) ? QueryType.YOUTUBE_VIDEO : QueryType.AUTO;
 
-        let tracklist = {};
-
-        if (isUrl) {
-            tracklist = await client.player.search(require, {
-                requestedBy: interaction.user,
-                searchEngine: QueryType.YOUTUBE_VIDEO
-            });
-        } else {
-            tracklist = await client.player.search(require, {
-                requestedBy: interaction.user,
-                searchEngine: QueryType.AUTO
-            });
-        }
+        const tracklist = await client.player.search(require, {
+            requestedBy: interaction.user,
+            searchEngine: queryType
+        })
+        .catch((err) => console.log(err));
 
         if (!tracklist.tracks.length) {
             response.setTitle("재생 가능한 음악이 없습니다!").setDescription("다른 음악을 검색해 보세요");
@@ -40,7 +32,7 @@ module.exports = {
         }
 
         const track = tracklist.tracks[0];
-        await queue.addTracks(track)
+        await queue.addTracks(t)
 
         response.setTitle("노래를 트랙에 추가했어요!")
             .setDescription(`song name : ${track?.title}\nsong url : ${track?.url}`)
