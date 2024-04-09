@@ -16,6 +16,6 @@ module.exports = {
             searchEngine: QueryType.YOUTUBE_SEARCH
         });
 
-        return await interaction.editReply(tracklist.tracks.length);
+        return await interaction.editReply(`${tracklist.tracks.length}`);
     }
 }
