@@ -1,11 +1,11 @@
-const { SlashCommandBuilder, EmbedBuilder, Embed } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const { QueryType } = require("discord-player");
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("search")
         .setDescription("재생 가능한 음악을 검색합니다.")
-        .addStringOption((option) => option.setName("query").setDescription(" ")),
+        .addUserOption((option) => option.setName("query").setDescription("search")),
     async execute(client, interaction) {
 
         const response = new EmbedBuilder();
