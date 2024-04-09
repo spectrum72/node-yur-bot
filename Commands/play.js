@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, Colors } = require("discord.js");
 const { QueryType } = require("discord-player");
 
 module.exports = {
@@ -20,12 +20,33 @@ module.exports = {
         const isUrl = require.startsWith("http://") || require.startsWith("https://");
         const queryType = (isUrl) ? QueryType.YOUTUBE_VIDEO : QueryType.AUTO;
 
-        const tracklist = await client.player.search(require, {
-            requestedBy: interaction.user,
-            searchEngine: queryType
-        })
-        .catch((err) => console.log(err));
+        let tracklist = {};
 
-        return await interaction.editReply(`${tracklist.tracks.length}`);
+        if (isUrl) {
+            tracklist = await client.player.search(require, {
+                requestedBy: interaction.user,
+                searchEngine: QueryType.YOUTUBE_VIDEO
+            });
+        } else {
+            tracklist = await client.player.search(require, {
+                requestedBy: interaction.user,
+                searchEngine: QueryType.AUTO
+            });
+        }
+
+        if (!tracklist.tracks.length) {
+            response.setTitle("재생 가능한 음악이 없습니다!").setDescription("다른 음악을 검색해 보세요");
+            return await interaction.editReply({ embeds: [response.data] });
+        }
+
+        const track = tracklist.tracks[0];
+        await queue.addTracks(track)
+
+        response.setTitle("노래를 트랙에 추가했어요!")
+            .setDescription(`song name : ${track?.title}\nsong url : ${track?.url}`)
+            .setImage(track?.thumbnail)
+            .setColor(Colors.Aqua);
+
+        return await interaction.editReply({embeds : [response.data]});
     }
 }
