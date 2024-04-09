@@ -89,7 +89,7 @@ client.on(Discord.Events.MessageCreate, async (interaction) => {
     }
 
     if (interaction.content.startsWith(".")) {
-
+        interaction.editReply("Hello world");
     }
 });
 
