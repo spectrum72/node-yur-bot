@@ -25,7 +25,8 @@ module.exports = {
         let description = "";
         for (let i = 0; i < tracklist.tracks.length; i++) {
             track = tracklist.tracks[i];
-            description += `[${i+1}] ${track?.title}\n\n`;
+            description += `[${i+1}] ${track?.title}\nurl: ${track?.url}\n\n`;
+            if (i == 20) break;
         }
 
         response.setTitle(`${tracklist.tracks.length}개의 음악을 찾았어요!`)

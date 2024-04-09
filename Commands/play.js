@@ -13,12 +13,12 @@ module.exports = {
         const voiceChannel = client.member.voice.channel;
         if (!voiceChannel) return await interaction.editReply("음성 채널에 들어가셔야 합니다.");
 
-        const queue = await client.player.queue.create(interaction.guild);
-        if (!queue.connection) await queue.connect();
+        const queue = await client.player.node.create(interaction.guild);
+        if (!queue.connection) await queue.connect(voiceChannel);
 
         const require = interaction.options.getString("music");
         const isUrl = require.startsWith("http://") || require.startsWith("https://");
-        const queryType = (isUrl) ? QueryType.YOUTUBE_VIDEO : QueryType.YOUTUBE_SEARCH;
+        const queryType = (isUrl) ? QueryType.YOUTUBE_VIDEO : QueryType.AUTO;
 
         const tracklist = await client.player.search(require, {
             requestedBy: interaction.user,
