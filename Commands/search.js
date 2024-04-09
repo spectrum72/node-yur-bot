@@ -13,7 +13,7 @@ module.exports = {
         const query = interaction.options.getString("query");
         const tracklist = await client.player.search(query, {
             requestedBy: interaction.user,
-            searchEngine: QueryType.AUTO
+            searchEngine: QueryType.YOUTUBE_SEARCH
         });
 
         if (!tracklist.tracks.length) {
