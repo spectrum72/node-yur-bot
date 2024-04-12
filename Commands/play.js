@@ -32,7 +32,7 @@ module.exports = {
         }
 
         const track = tracklist.tracks[0];
-        await queue.addTracks(track);
+        await queue.resolve(track);
 
         response.setTitle("노래를 트랙에 추가했어요!")
             .setDescription(`song name : ${track?.title}\nsong url : ${track?.url}`)
